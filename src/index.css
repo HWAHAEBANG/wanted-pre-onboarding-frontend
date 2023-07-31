@@ -4,6 +4,10 @@
 @tailwind utilities;
 /* ================================  */
 
+#root {
+  @apply w-full max-w-screen-2xl;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -11,9 +15,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  @apply bg-slate-50;
+  @apply flex flex-col items-center;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.active {
+  color: #2563eb;
+  font-weight: 500;
 }
