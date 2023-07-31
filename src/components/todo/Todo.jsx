@@ -8,7 +8,8 @@ export default function Todo() {
         <input
           data-testid='new-todo-input'
           type='text'
-          className='w-635 h-10 rounded-md bg-slate-200 outline-none px-3'
+          placeholder='할 일을 입력해주세요.'
+          className='w-635 h-10 rounded-md bg-white shadow-md outline-none px-3'
         />
         <button data-testid='new-todo-add-button' className='p-1'>
           <BlueButton text='추가' />
