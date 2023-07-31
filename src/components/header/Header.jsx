@@ -2,10 +2,11 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { BiTask } from "react-icons/bi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import BlueButton from "../ui/BlueButton";
 
 export default function Header() {
   return (
-    <div className='fixed px-10 flex justify-between items-center w-full h-14 left-0'>
+    <div className='fixed bg-white/70 px-10 flex justify-between items-center w-full h-14 left-0'>
       <Link
         to='/'
         className='text-blue-600 font-bold  text-2xl flex items-center  gap-1'
@@ -27,17 +28,11 @@ export default function Header() {
         </NavLink>
       </div>
       <div className='flex gap-3'>
-        <Link
-          to='/signin'
-          className='bg-blue-600 p-2 rounded-md text-white hover:brightness-110'
-        >
-          Sign In
+        <Link to='/signin'>
+          <BlueButton text='Sign In' />
         </Link>
-        <Link
-          to='/signup'
-          className='bg-blue-600 p-2 rounded-md text-white hover:brightness-110'
-        >
-          Sign Up
+        <Link to='/signup'>
+          <BlueButton text='Sign Up' />
         </Link>
       </div>
     </div>

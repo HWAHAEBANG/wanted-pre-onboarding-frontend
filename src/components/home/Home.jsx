@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import BlueButton from "../ui/BlueButton";
 
 export default function Home() {
   return (
@@ -12,11 +13,8 @@ export default function Home() {
             <br />
             To-Do List로 더 생산적인 하루를 시작해보세요.
           </p>
-          <Link
-            to='/todo'
-            className='bg-blue-600 p-2 rounded-md text-white hover:brightness-110 w-56 text-center'
-          >
-            To-Do List 바로 만나보기
+          <Link to='/todo'>
+            <BlueButton text='To-Do List 바로 만나보기' />
           </Link>
         </div>
       </div>
