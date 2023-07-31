@@ -5,7 +5,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 export default function Header() {
   return (
-    <div className='flex justify-between items-center w-full h-14 left-0'>
+    <div className='fixed px-10 flex justify-between items-center w-full h-14 left-0'>
       <Link
         to='/'
         className='text-blue-600 font-bold  text-2xl flex items-center  gap-1'
