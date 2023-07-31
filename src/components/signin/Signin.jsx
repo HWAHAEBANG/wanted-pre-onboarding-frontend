@@ -1,13 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import BlueButton from "../ui/BlueButton";
+import axios from "axios";
 
 export default function Signin() {
+  const [inputValue, setInputVlaue] = useState({ email: "", password: "" });
+
+  const handleChange = (e) => {
+    setInputVlaue((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    axios({
+      method: "post",
+      url: "https://www.pre-onboarding-selection-task.shop/auth/signin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        email: inputValue.email,
+        password: inputValue.password,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        alert("이메일 또는 비밀번호를 다시 확인해주세요.");
+        console.log(error);
+      });
+  };
+
+  console.log("확인", inputValue);
+
   return (
     <div className='h-screen flex flex-col justify-center items-center gap-5'>
-      <input placeholder='이메일' className={INPUT_STYLE} />
-      <input placeholder='비밀번호' className={INPUT_STYLE} />
-      <button data-testid='signup-button'>
+      <input
+        onChange={handleChange}
+        type='email'
+        name='email'
+        placeholder='이메일'
+        className={INPUT_STYLE}
+      />
+      <input
+        onChange={handleChange}
+        type='password'
+        name='password'
+        placeholder='비밀번호'
+        className={INPUT_STYLE}
+      />
+      <button data-testid='signup-button' onClick={handleSubmit}>
         <BlueButton text='로그인' />
       </button>
     </div>
