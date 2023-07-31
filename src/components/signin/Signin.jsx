@@ -27,9 +27,11 @@ export default function Signin() {
     })
       .then((response) => {
         console.log(response);
+        console.log(response.data.access_token);
+        localStorage.setItem("accessToken", response.data.access_token);
       })
       .catch((error) => {
-        alert("이메일 또는 비밀번호를 다시 확인해주세요.");
+        alert("이메일 또는 비밀번호가 올바르지 않습니다.");
         console.log(error);
       });
   };
