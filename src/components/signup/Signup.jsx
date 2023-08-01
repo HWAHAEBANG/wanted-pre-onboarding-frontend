@@ -40,6 +40,7 @@ export default function Signup() {
     <div className='h-screen flex flex-col justify-center items-center gap-5'>
       <input
         onChange={handleChange}
+        value={inputValue.email}
         type='email'
         name='email'
         placeholder='이메일'
@@ -47,6 +48,7 @@ export default function Signup() {
       />
       <input
         onChange={handleChange}
+        value={inputValue.password}
         type='password'
         name='password'
         placeholder='비밀번호'

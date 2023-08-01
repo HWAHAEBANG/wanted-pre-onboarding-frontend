@@ -42,6 +42,7 @@ export default function Signin() {
     <div className='h-screen flex flex-col justify-center items-center gap-5'>
       <input
         onChange={handleChange}
+        value={inputValue.email}
         type='email'
         name='email'
         placeholder='이메일'
@@ -49,6 +50,7 @@ export default function Signin() {
       />
       <input
         onChange={handleChange}
+        value={inputValue.password}
         type='password'
         name='password'
         placeholder='비밀번호'
