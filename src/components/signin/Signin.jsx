@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import BlueButton from "../ui/BlueButton";
 import axios from "axios";
 import { authContext } from "../../context/authContext";
+import { isEmailValid, isPasswordValid } from "../../utils/validation";
 
 export default function Signin() {
   const { isSignedIn, setIsSignedIn } = useContext(authContext);
@@ -19,28 +20,33 @@ export default function Signin() {
   };
 
   const handleSubmit = () => {
-    axios({
-      method: "post",
-      url: "https://www.pre-onboarding-selection-task.shop/auth/signin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        email: inputValue.email,
-        password: inputValue.password,
-      },
-    })
-      .then((response) => {
-        setIsSignedIn(true);
-        localStorage.setItem("accessToken", response.data.access_token);
-        navigate("/todo");
+    if (!isEmailValid(inputValue.email)) {
+      alert("올바른 이메일 주소를 입력하세요. @를 포함하여야 합니다.");
+    } else if (!isPasswordValid(inputValue.password)) {
+      alert("비밀번호는 최소 8자리 이상이어야 합니다.");
+    } else {
+      axios({
+        method: "post",
+        url: "https://www.pre-onboarding-selection-task.shop/auth/signin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          email: inputValue.email,
+          password: inputValue.password,
+        },
       })
-      .catch((error) => {
-        alert("이메일 또는 비밀번호가 올바르지 않습니다.");
-        console.log(error);
-      });
+        .then((response) => {
+          setIsSignedIn(true);
+          localStorage.setItem("accessToken", response.data.access_token);
+          navigate("/todo");
+        })
+        .catch((error) => {
+          alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+          console.log(error);
+        });
+    }
   };
-
   console.log("확인", inputValue);
 
   return (

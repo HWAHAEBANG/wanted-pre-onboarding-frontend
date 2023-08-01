@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import BlueButton from "../ui/BlueButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { isEmailValid, isPasswordValid } from "../../utils/validation";
 
 export default function Signup() {
   const [inputValue, setInputVlaue] = useState({ email: "", password: "" });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setInputVlaue((prevState) => ({
@@ -14,24 +17,34 @@ export default function Signup() {
   };
 
   const handleSubmit = () => {
-    axios({
-      method: "post",
-      url: "https://www.pre-onboarding-selection-task.shop/auth/signup",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        email: inputValue.email,
-        password: inputValue.password,
-      },
-    })
-      .then((response) => {
-        console.log(response);
+    if (!isEmailValid(inputValue.email)) {
+      alert("올바른 이메일 주소를 입력하세요. @를 포함하여야 합니다.");
+    } else if (!isPasswordValid(inputValue.password)) {
+      alert("비밀번호는 최소 8자리 이상이어야 합니다.");
+    } else {
+      axios({
+        method: "post",
+        url: "https://www.pre-onboarding-selection-task.shop/auth/signup",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          email: inputValue.email,
+          password: inputValue.password,
+        },
       })
-      .catch((error) => {
-        alert("동일한 이메일이 이미 존재합니다.");
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+          alert(
+            "회원가입이 정상적으로 완료되었습니다. 로그인 페이지로 이동합니다."
+          );
+          navigate("/signin");
+        })
+        .catch((error) => {
+          alert("동일한 이메일이 이미 존재합니다.");
+          console.log(error);
+        });
+    }
   };
 
   console.log("확인", inputValue);
