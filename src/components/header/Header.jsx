@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { BiTask } from "react-icons/bi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import BlueButton from "../ui/BlueButton";
+import { authContext } from "../../context/authContext";
 
 export default function Header() {
+  const { isSignedIn, setIsSignedIn } = useContext(authContext);
+  console.log("확인", isSignedIn, setIsSignedIn);
+
+  const handleLogOut = () => {
+    setIsSignedIn(false);
+    localStorage.removeItem("accessToken");
+  };
+
   return (
     <div className='fixed bg-white/70 px-10 flex justify-between items-center w-full h-14 left-0'>
       <Link
@@ -27,14 +36,20 @@ export default function Header() {
           Todo List
         </NavLink>
       </div>
-      <div className='flex gap-3'>
-        <Link to='/signin'>
-          <BlueButton text='Sign In' />
-        </Link>
-        <Link to='/signup'>
-          <BlueButton text='Sign Up' />
-        </Link>
-      </div>
+      <p></p>
+
+      {isSignedIn && isSignedIn ? (
+        <BlueButton text='Log Out' onClickEvent={handleLogOut} />
+      ) : (
+        <div className='flex gap-3'>
+          <Link to='/signin'>
+            <BlueButton text='Sign In' />
+          </Link>
+          <Link to='/signup'>
+            <BlueButton text='Sign Up' />
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

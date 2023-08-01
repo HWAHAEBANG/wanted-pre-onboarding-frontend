@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import BlueButton from "../ui/BlueButton";
 import axios from "axios";
+import { authContext } from "../../context/authContext";
 
 export default function Signin() {
+  const { isSignedIn, setIsSignedIn } = useContext(authContext);
+  const navigate = useNavigate();
+
+  // 이하 커스텀 훅으로 리팩토링 할 것====
   const [inputValue, setInputVlaue] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
@@ -26,9 +31,9 @@ export default function Signin() {
       },
     })
       .then((response) => {
-        console.log(response);
-        console.log(response.data.access_token);
+        setIsSignedIn(true);
         localStorage.setItem("accessToken", response.data.access_token);
+        navigate("/todo");
       })
       .catch((error) => {
         alert("이메일 또는 비밀번호가 올바르지 않습니다.");
