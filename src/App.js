@@ -9,15 +9,15 @@ import NotFoundPage from "./pages/NotFoundPage";
 import HomePage from "./pages/HomePage";
 import { authContext } from "./context/authContext";
 import { useEffect, useState } from "react";
+import ProtectedRoute from "./components/protected-route/ProtectedRoute";
 
 function App() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const checkSigninStatus = () => {
+    const isSignedIn = !!localStorage.getItem("accessToken");
+    return isSignedIn;
+  };
 
-  useEffect(() => {
-    localStorage.getItem("accessToken")
-      ? setIsSignedIn(true)
-      : setIsSignedIn(false);
-  }, []);
+  const [isSignedIn, setIsSignedIn] = useState(checkSigninStatus());
 
   return (
     <>
@@ -25,9 +25,30 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/todo' element={<TodoPage />} />
-          <Route path='/signin' element={<SigninPage />} />
-          <Route path='/signup' element={<SignupPage />} />
+          <Route
+            path='/todo'
+            element={
+              <ProtectedRoute>
+                <TodoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/signin'
+            element={
+              <ProtectedRoute>
+                <SigninPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <ProtectedRoute>
+                <SignupPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </authContext.Provider>
