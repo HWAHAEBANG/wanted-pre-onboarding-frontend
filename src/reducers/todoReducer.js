@@ -3,18 +3,18 @@ import { createTodo, getTodo, updateTodo, deleteItem } from "../apis/todoApi";
 export const todoReducer = (state, action) => {
   switch (action.type) {
     case "create-todo":
-      return [...state, action.payload.newTodo];
+      return [...state, action.payload];
 
     case "get-todos":
-      return action.payload.todos;
+      return action.payload;
 
     case "update-todo": // 성능저하
       return state.map((todo) =>
-        todo.id === action.payload.updatedTodo.id
+        todo.id === action.payload.id
           ? {
               ...todo,
-              todo: action.payload.updatedTodo.todo,
-              isCompleted: action.payload.updatedTodo.isCompleted,
+              todo: action.payload.todo,
+              isCompleted: action.payload.isCompleted,
             }
           : todo
       );

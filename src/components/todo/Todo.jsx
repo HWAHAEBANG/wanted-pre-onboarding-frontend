@@ -14,7 +14,7 @@ export default function Todo() {
   useEffect(() => {
     getTodo() //
       .then((todos) => {
-        dispatch({ type: "get-todos", payload: { todos } });
+        dispatch({ type: "get-todos", payload: todos });
       })
       .catch((error) => {
         console.log(error);
@@ -28,9 +28,8 @@ export default function Todo() {
   const handleCreateButtonClick = () => {
     createTodo(inputValue)
       .then((newTodo) => {
-        dispatch({ type: "create-todo", payload: { newTodo } });
+        dispatch({ type: "create-todo", payload: newTodo });
         setInputValue("");
-        console.log("왤까", newTodo);
       })
       .catch((error) => {
         console.log(error);
@@ -41,7 +40,7 @@ export default function Todo() {
     if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
       createTodo(inputValue)
         .then((newTodo) => {
-          dispatch({ type: "create-todo", payload: { newTodo } });
+          dispatch({ type: "create-todo", payload: newTodo });
           setInputValue("");
         })
         .catch((error) => {

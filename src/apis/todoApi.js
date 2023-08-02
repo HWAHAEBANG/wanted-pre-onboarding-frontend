@@ -52,6 +52,7 @@ export const updateTodo = async (id, todo, isCompleted) => {
         isCompleted,
       },
     });
+    console.log("속도체크", response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -69,6 +70,7 @@ export const deleteTodo = async (id) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
+    console.log("속도체크", response.data);
     return response.data;
   } catch (error) {
     console.log(error);

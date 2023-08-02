@@ -18,7 +18,7 @@ export default function TodoCard({ todo, dispatch }) {
         .then((updatedTodo) => {
           dispatch({
             type: "update-todo",
-            payload: { updatedTodo },
+            payload: updatedTodo,
           });
           setEditMode(false);
         })
@@ -45,7 +45,7 @@ export default function TodoCard({ todo, dispatch }) {
         .then((updatedTodo) => {
           dispatch({
             type: "update-todo",
-            payload: { updatedTodo },
+            payload: updatedTodo,
           });
           setEditMode(false);
         })
@@ -57,7 +57,7 @@ export default function TodoCard({ todo, dispatch }) {
         .then((updatedTodo) => {
           dispatch({
             type: "update-todo",
-            payload: { updatedTodo },
+            payload: updatedTodo,
           });
           setEditMode(false);
         })
