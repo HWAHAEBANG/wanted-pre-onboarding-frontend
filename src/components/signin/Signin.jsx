@@ -4,41 +4,26 @@ import BlueButton from "../ui/BlueButton";
 import axios from "axios";
 import { authContext } from "../../context/authContext";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
+import { useInput } from "../../hooks/useInput";
+import { signin } from "../../apis/authApi";
 
 export default function Signin() {
-  const { isSignedIn, setIsSignedIn } = useContext(authContext);
+  const { setIsSignedIn } = useContext(authContext);
   const navigate = useNavigate();
 
-  // 이하 커스텀 훅으로 리팩토링 할 것====
-  const [inputValue, setInputVlaue] = useState({ email: "", password: "" });
-
-  const handleChange = (e) => {
-    setInputVlaue((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = () => {
+  const submitAction = () => {
     if (!isEmailValid(inputValue.email)) {
       alert("올바른 이메일 주소를 입력하세요. @를 포함하여야 합니다.");
     } else if (!isPasswordValid(inputValue.password)) {
       alert("비밀번호는 최소 8자리 이상이어야 합니다.");
     } else {
-      axios({
-        method: "post",
-        url: "https://www.pre-onboarding-selection-task.shop/auth/signin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          email: inputValue.email,
-          password: inputValue.password,
-        },
+      signin({
+        email: inputValue.email,
+        password: inputValue.password,
       })
         .then((response) => {
           setIsSignedIn(true);
-          localStorage.setItem("accessToken", response.data.access_token);
+          localStorage.setItem("accessToken", response.access_token);
           navigate("/todo");
         })
         .catch((error) => {
@@ -47,7 +32,11 @@ export default function Signin() {
         });
     }
   };
-  console.log("확인", inputValue);
+
+  const [inputValue, handleChange, handleSubmit] = useInput(
+    { email: "", password: "" },
+    submitAction
+  );
 
   return (
     <div className='h-screen flex flex-col justify-center items-center gap-5'>
