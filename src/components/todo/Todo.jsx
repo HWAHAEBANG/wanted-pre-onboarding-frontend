@@ -3,13 +3,11 @@ import BlueButton from "../ui/BlueButton";
 import { todoReducer } from "../../reducers/todoReducer";
 import TodoCard from "./TodoCard";
 import { createTodo, getTodo } from "../../apis/todoApi";
+import { useInput } from "../../hooks/useInput";
 
 export default function Todo() {
   const initialState = [];
-
   const [todos, dispatch] = useReducer(todoReducer, initialState);
-
-  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     getTodo() //
@@ -21,23 +19,19 @@ export default function Todo() {
       });
   }, []);
 
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleCreateButtonClick = () => {
-    createTodo(inputValue)
-      .then((newTodo) => {
-        dispatch({ type: "create-todo", payload: newTodo });
-        setInputValue("");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleCreateKeyPress = (e) => {
+  const submitAction = (e) => {
     if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
+      if (e.type === "keyup") {
+        createTodo(inputValue)
+          .then((newTodo) => {
+            dispatch({ type: "create-todo", payload: newTodo });
+            setInputValue("");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    } else if (e.type === "click") {
       createTodo(inputValue)
         .then((newTodo) => {
           dispatch({ type: "create-todo", payload: newTodo });
@@ -49,7 +43,10 @@ export default function Todo() {
     }
   };
 
-  console.log("테스트", todos);
+  const [inputValue, handleChange, handleSubmit, setInputValue] = useInput(
+    "",
+    submitAction
+  );
 
   return (
     <div className='h-screen pt-16  flex flex-col items-center gap-2'>
@@ -59,12 +56,12 @@ export default function Todo() {
           type='text'
           value={inputValue}
           onChange={handleChange}
-          onKeyUp={handleCreateKeyPress}
+          onKeyUp={(e) => handleSubmit(e)}
           placeholder='할 일을 입력해주세요.'
           className='w-635 h-10 rounded-md bg-white shadow-md outline-none px-3'
         />
         <button data-testid='new-todo-add-button' className='p-1'>
-          <BlueButton text='추가' onClickEvent={handleCreateButtonClick} />
+          <BlueButton text='추가' onClickEvent={(e) => handleSubmit(e)} />
         </button>
       </div>
       <ul className='w-700 flex flex-col gap-3'>
