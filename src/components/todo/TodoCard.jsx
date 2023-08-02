@@ -1,31 +1,30 @@
 import React, { useReducer, useState } from "react";
 import BlueButton from "../ui/BlueButton";
 import { toIdentifier } from "@babel/types";
+import { deleteTodo, updateTodo } from "../../apis/todoApi";
 
 export default function TodoCard({ todo, dispatch }) {
   const handleDeleteButtonClick = () => {
-    dispatch({ type: "delete-todo", payload: { id: todo.id } });
-  };
-
-  const handleUpdateButtonClick = () => {
-    dispatch({ type: "update-todo", payload: { id: todo.id, inputEditValue } });
-    setEditMode(false);
-  };
-
-  const handleCheck = () => {
-    dispatch({
-      type: "check-todo",
-      payload: { id: todo.id, isCompleted: todo.isCompleted },
-    });
+    deleteTodo(todo.id) //
+      .then(dispatch({ type: "delete-todo", payload: { id: todo.id } }))
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleUpdateKeyPress = (e) => {
     if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
-      dispatch({
-        type: "update-todo",
-        payload: { id: todo.id, inputEditValue },
-      });
-      setEditMode(false);
+      updateTodo(todo.id, inputEditValue, todo.isCompleted) ///
+        .then((updatedTodo) => {
+          dispatch({
+            type: "update-todo",
+            payload: { updatedTodo },
+          });
+          setEditMode(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -40,6 +39,34 @@ export default function TodoCard({ todo, dispatch }) {
     setInputEditValue(e.target.value);
   };
 
+  const handleUpdate = (e) => {
+    if (e.type === "change") {
+      updateTodo(todo.id, todo.todo, !todo.isCompleted) ///
+        .then((updatedTodo) => {
+          dispatch({
+            type: "update-todo",
+            payload: { updatedTodo },
+          });
+          setEditMode(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (e.type === "click") {
+      updateTodo(todo.id, inputEditValue, todo.isCompleted) ///
+        .then((updatedTodo) => {
+          dispatch({
+            type: "update-todo",
+            payload: { updatedTodo },
+          });
+          setEditMode(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   console.log("수정모드", editMode);
 
   return (
@@ -48,7 +75,7 @@ export default function TodoCard({ todo, dispatch }) {
         <input
           type='checkbox'
           checked={todo.isCompleted}
-          onChange={handleCheck}
+          onChange={handleUpdate}
         />
         {editMode ? (
           <input
@@ -65,7 +92,7 @@ export default function TodoCard({ todo, dispatch }) {
       {editMode ? (
         <div className='flex  gap-1'>
           <button data-testid='modify-button'>
-            <BlueButton text='제출' onClickEvent={handleUpdateButtonClick} />
+            <BlueButton text='제출' onClickEvent={handleUpdate} />
           </button>
           <button data-testid='delete-button'>
             <BlueButton text='취소' onClickEvent={editModeOff} />

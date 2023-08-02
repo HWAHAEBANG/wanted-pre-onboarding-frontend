@@ -1,35 +1,52 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import BlueButton from "../ui/BlueButton";
 import { todoReducer } from "../../reducers/todoReducer";
 import TodoCard from "./TodoCard";
+import { createTodo, getTodo } from "../../apis/todoApi";
 
 export default function Todo() {
-  const initialState = [
-    {
-      id: Date.now(),
-      todo: "코딩하기",
-      isCompleted: true,
-      // userId: ""
-    },
-  ];
+  const initialState = [];
 
   const [todos, dispatch] = useReducer(todoReducer, initialState);
 
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    getTodo() //
+      .then((todos) => {
+        dispatch({ type: "get-todos", payload: { todos } });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const handleCreateButtonClick = () => {
-    dispatch({ type: "create-todo", payload: { inputValue } });
-    setInputValue("");
+    createTodo(inputValue)
+      .then((newTodo) => {
+        dispatch({ type: "create-todo", payload: { newTodo } });
+        setInputValue("");
+        console.log("왤까", newTodo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleCreateKeyPress = (e) => {
     if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
-      dispatch({ type: "create-todo", payload: { inputValue } });
-      setInputValue("");
+      createTodo(inputValue)
+        .then((newTodo) => {
+          dispatch({ type: "create-todo", payload: { newTodo } });
+          setInputValue("");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
