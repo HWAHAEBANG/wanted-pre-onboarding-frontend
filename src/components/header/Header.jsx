@@ -7,7 +7,6 @@ import { authContext } from "../../context/authContext";
 
 export default function Header() {
   const { isSignedIn, setIsSignedIn } = useContext(authContext);
-  console.log("확인", isSignedIn, setIsSignedIn);
 
   const handleLogOut = () => {
     setIsSignedIn(false);

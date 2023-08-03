@@ -1,10 +1,11 @@
-import React, { useReducer, useState } from "react";
+import React, { memo, useState } from "react";
 import BlueButton from "../ui/BlueButton";
 import { deleteTodo, updateTodo } from "../../apis/todoApi";
 import { useInput } from "../../hooks/useInput";
 
-export default function TodoCard({ todo, dispatch }) {
+function TodoCard({ todo, dispatch }) {
   const handleDelete = () => {
+    console.log("검문소4 : todo삭제 함수");
     deleteTodo(todo.id) //
       .then(dispatch({ type: "delete-todo", payload: { id: todo.id } }))
       .catch((error) => {
@@ -12,14 +13,17 @@ export default function TodoCard({ todo, dispatch }) {
       });
   };
 
-  //useRef로 리팩토링 예정? 아니다 나갔다 들어오면 원래대로 돌아와야하니 원시타입이 낫겠다.
   const [editMode, setEditMode] = useState(false);
   const editModeOn = () => setEditMode(true);
-  const editModeOff = () => setEditMode(false);
+  const editModeOff = () => {
+    setEditMode(false);
+    setInputValue(todo.todo);
+  };
 
   const submitAction = (e) => {
+    console.log("검문소4 : todo수정 함수");
     if (e.type === "change") {
-      updateTodo(todo.id, todo.todo, !todo.isCompleted) ///
+      updateTodo(todo.id, todo.todo, !todo.isCompleted) //
         .then((updatedTodo) => {
           dispatch({
             type: "update-todo",
@@ -34,7 +38,7 @@ export default function TodoCard({ todo, dispatch }) {
       e.type === "click" ||
       (e.type === "keyup" && e.key === "Enter")
     ) {
-      updateTodo(todo.id, inputValue, todo.isCompleted) ///
+      updateTodo(todo.id, inputValue, todo.isCompleted) //
         .then((updatedTodo) => {
           dispatch({
             type: "update-todo",
@@ -48,12 +52,12 @@ export default function TodoCard({ todo, dispatch }) {
     }
   };
 
-  const [inputValue, handleChange, handleSubmit] = useInput(
+  const [inputValue, handleChange, handleSubmit, setInputValue] = useInput(
     todo.todo,
     submitAction
   );
 
-  console.log("수정모드", editMode);
+  console.log("검문소5 : todoCard컴포넌트 렌더링");
 
   return (
     <li className='px-4 py-1 bg-gray-100 shadow-md rounded-md flex justify-between items-center'>
@@ -65,6 +69,7 @@ export default function TodoCard({ todo, dispatch }) {
         />
         {editMode ? (
           <input
+            data-testid='modify-input'
             className='ml-2 w-96 px-1 rounded-md'
             type='text'
             value={inputValue}
@@ -77,23 +82,25 @@ export default function TodoCard({ todo, dispatch }) {
       </label>
       {editMode ? (
         <div className='flex  gap-1'>
-          <button data-testid='modify-button'>
-            <BlueButton text='제출' onClickEvent={handleSubmit} />
+          <button data-testid='submit-button' onClick={handleSubmit}>
+            <BlueButton text='제출' />
           </button>
-          <button data-testid='delete-button'>
-            <BlueButton text='취소' onClickEvent={editModeOff} />
+          <button data-testid='cancel-button' onClick={editModeOff}>
+            <BlueButton text='취소' />
           </button>
         </div>
       ) : (
         <div className='flex  gap-1'>
-          <button data-testid='modify-button'>
-            <BlueButton text='수정' onClickEvent={editModeOn} />
+          <button data-testid='modify-button' onClick={editModeOn}>
+            <BlueButton text='수정' />
           </button>
-          <button data-testid='delete-button'>
-            <BlueButton text='삭제' onClickEvent={handleDelete} />
+          <button data-testid='delete-button' onClick={handleDelete}>
+            <BlueButton text='삭제' />
           </button>
         </div>
       )}
     </li>
   );
 }
+
+export default memo(TodoCard);

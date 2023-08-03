@@ -3,6 +3,7 @@ import axios from "axios";
 const BASE_URL = "https://www.pre-onboarding-selection-task.shop";
 
 export const signup = async (data) => {
+  console.log("검문소11 : 회원가입 통신");
   try {
     const response = await axios({
       method: "post",
@@ -20,6 +21,7 @@ export const signup = async (data) => {
 };
 
 export const signin = async (data) => {
+  console.log("검문소12 : 로그인 통신");
   try {
     const response = await axios({
       method: "post",

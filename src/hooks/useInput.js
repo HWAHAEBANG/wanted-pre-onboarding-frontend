@@ -4,6 +4,7 @@ export function useInput(initialValue, submitAction) {
   const [inputValue, setInputValue] = useState(initialValue);
 
   const handleChange = (e) => {
+    console.log("검문소7 : 핸들체인지");
     if (typeof initialValue === "object") {
       setInputValue((prevState) => ({
         ...prevState,
@@ -15,6 +16,7 @@ export function useInput(initialValue, submitAction) {
   };
 
   const handleSubmit = (e) => {
+    console.log("검문소8 : 핸들서밋");
     submitAction(e, inputValue);
   };
 

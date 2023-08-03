@@ -10,6 +10,7 @@ export default function Todo() {
   const [todos, dispatch] = useReducer(todoReducer, initialState);
 
   useEffect(() => {
+    console.log("검문소1 : fetch todos");
     getTodo() //
       .then((todos) => {
         dispatch({ type: "get-todos", payload: todos });
@@ -20,6 +21,7 @@ export default function Todo() {
   }, []);
 
   const submitAction = (e) => {
+    console.log("검문소2 : todo추가 함수");
     if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
       if (e.type === "keyup") {
         createTodo(inputValue)
@@ -48,6 +50,8 @@ export default function Todo() {
     submitAction
   );
 
+  console.log("검문소6 : todoCard컴포넌트 렌더링");
+
   return (
     <div className='h-screen pt-16  flex flex-col items-center gap-2'>
       <div>
@@ -60,8 +64,12 @@ export default function Todo() {
           placeholder='할 일을 입력해주세요.'
           className='w-635 h-10 rounded-md bg-white shadow-md outline-none px-3'
         />
-        <button data-testid='new-todo-add-button' className='p-1'>
-          <BlueButton text='추가' onClickEvent={(e) => handleSubmit(e)} />
+        <button
+          data-testid='new-todo-add-button'
+          onClick={(e) => handleSubmit(e)}
+          className='p-1'
+        >
+          <BlueButton text='추가' />
         </button>
       </div>
       <ul className='w-700 flex flex-col gap-3'>
