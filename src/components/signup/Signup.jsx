@@ -79,7 +79,11 @@ export default function Signup() {
           <p className='w-96 text-xs pl-1 mb-2'>비밀번호는 8자리 이상입니다.</p>
         )}
       </div>
-      <button data-testid='signup-button' onClick={handleSubmit}>
+      <button
+        data-testid='signup-button'
+        onClick={handleSubmit}
+        disabled={!(validEmail && validPassword)}
+      >
         <BlueButton
           text='회원가입'
           forDisabledCss={!(validEmail && validPassword)}
