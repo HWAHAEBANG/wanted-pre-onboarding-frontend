@@ -4,15 +4,6 @@ import { deleteTodo, updateTodo } from "../../apis/todoApi";
 import { useInput } from "../../hooks/useInput";
 
 function TodoCard({ todo, dispatch }) {
-  const handleDelete = () => {
-    console.log("검문소4 : todo삭제 함수");
-    deleteTodo(todo.id) //
-      .then(dispatch({ type: "delete-todo", payload: { id: todo.id } }))
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const [editMode, setEditMode] = useState(false);
   const editModeOn = () => setEditMode(true);
   const editModeOff = () => {
@@ -20,8 +11,16 @@ function TodoCard({ todo, dispatch }) {
     setInputValue(todo.todo);
   };
 
-  const submitAction = (e) => {
-    console.log("검문소4 : todo수정 함수");
+  const submitDeleteAction = () => {
+    deleteTodo(todo.id) //
+      .then(dispatch({ type: "delete-todo", payload: { id: todo.id } }))
+      .catch((error) => {
+        // console.log(error);
+        throw new Error("Failed to delete todo");
+      });
+  };
+
+  const submitUpdateAction = (e) => {
     if (e.type === "change") {
       updateTodo(todo.id, todo.todo, !todo.isCompleted) //
         .then((updatedTodo) => {
@@ -32,7 +31,8 @@ function TodoCard({ todo, dispatch }) {
           setEditMode(false);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
+          throw new Error("Failed to update todo");
         });
     } else if (
       e.type === "click" ||
@@ -47,17 +47,16 @@ function TodoCard({ todo, dispatch }) {
           setEditMode(false);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
+          throw new Error("Failed to update todo");
         });
     }
   };
 
   const [inputValue, handleChange, handleSubmit, setInputValue] = useInput(
     todo.todo,
-    submitAction
+    submitUpdateAction
   );
-
-  console.log("검문소5 : todoCard컴포넌트 렌더링");
 
   return (
     <li className='px-4 py-1 bg-gray-100 shadow-md rounded-md flex justify-between items-center'>
@@ -94,7 +93,7 @@ function TodoCard({ todo, dispatch }) {
           <button data-testid='modify-button' onClick={editModeOn}>
             <BlueButton text='수정' />
           </button>
-          <button data-testid='delete-button' onClick={handleDelete}>
+          <button data-testid='delete-button' onClick={submitDeleteAction}>
             <BlueButton text='삭제' />
           </button>
         </div>

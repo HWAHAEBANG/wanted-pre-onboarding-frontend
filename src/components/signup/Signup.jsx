@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import BlueButton from "../ui/BlueButton";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import { signup } from "../../apis/authApi";
 import { useInput } from "../../hooks/useInput";
@@ -10,12 +9,6 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const submitAction = () => {
-    console.log("검문소9 : 회원가입 서밋");
-    // if (!isEmailValid(inputValue.email)) {
-    //   alert("올바른 이메일 주소를 입력하세요. @를 포함하여야 합니다.");
-    // } else if (!isPasswordValid(inputValue.password)) {
-    //   alert("비밀번호는 최소 8자리 이상이어야 합니다.");
-    // } else {
     signup({
       email: inputValue.email,
       password: inputValue.password,
@@ -28,9 +21,9 @@ export default function Signup() {
       })
       .catch((error) => {
         alert("동일한 이메일이 이미 존재합니다.");
-        console.log(error);
+        // console.log(error);
+        throw new Error("Failed to sign up");
       });
-    // }
   };
 
   const [inputValue, handleChange, handleSubmit] = useInput(
@@ -40,8 +33,6 @@ export default function Signup() {
 
   const validEmail = isEmailValid(inputValue.email);
   const validPassword = isPasswordValid(inputValue.password);
-
-  console.log("검문소17 : 회원가입 페이지 렌더링");
 
   return (
     <div className='h-screen flex flex-col justify-center items-center gap-1'>

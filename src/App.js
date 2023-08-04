@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/header/Header";
 import { Route, Routes } from "react-router-dom";
@@ -8,7 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import HomePage from "./pages/HomePage";
 import { authContext } from "./context/authContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProtectedRouteUnsignin from "./components/protected-route/ProtectedRouteUnsignin";
 import ProtectedRouteSignin from "./components/protected-route/ProtectedRouteSignin";
 

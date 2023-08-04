@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import BlueButton from "../ui/BlueButton";
 import { todoReducer } from "../../reducers/todoReducer";
 import TodoCard from "./TodoCard";
@@ -10,18 +10,17 @@ export default function Todo() {
   const [todos, dispatch] = useReducer(todoReducer, initialState);
 
   useEffect(() => {
-    console.log("검문소1 : fetch todos");
     getTodo() //
       .then((todos) => {
         dispatch({ type: "get-todos", payload: todos });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        throw new Error("Failed to fetch todo");
       });
   }, []);
 
-  const submitAction = (e) => {
-    console.log("검문소2 : todo추가 함수");
+  const submitCreateAction = (e) => {
     if (e.key === "Enter" && e.nativeEvent.isComposing === false) {
       if (e.type === "keyup") {
         createTodo(inputValue)
@@ -30,7 +29,8 @@ export default function Todo() {
             setInputValue("");
           })
           .catch((error) => {
-            console.log(error);
+            // console.log(error);
+            throw new Error("Failed to create todo");
           });
       }
     } else if (e.type === "click") {
@@ -40,17 +40,16 @@ export default function Todo() {
           setInputValue("");
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
+          throw new Error("Failed to create todo");
         });
     }
   };
 
   const [inputValue, handleChange, handleSubmit, setInputValue] = useInput(
     "",
-    submitAction
+    submitCreateAction
   );
-
-  console.log("검문소6 : todoCard컴포넌트 렌더링");
 
   return (
     <div className='h-screen pt-16  flex flex-col items-center gap-2'>

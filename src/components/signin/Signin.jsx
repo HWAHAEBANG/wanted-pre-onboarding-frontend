@@ -1,24 +1,16 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import BlueButton from "../ui/BlueButton";
-import axios from "axios";
 import { authContext } from "../../context/authContext";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import { useInput } from "../../hooks/useInput";
 import { signin } from "../../apis/authApi";
-import { valid } from "semver";
 
 export default function Signin() {
   const { setIsSignedIn } = useContext(authContext);
   const navigate = useNavigate();
 
   const submitAction = () => {
-    console.log("검문소10 : 로그인 서밋");
-    // if (!isEmailValid(inputValue.email)) {
-    //   alert("올바른 이메일 주소를 입력하세요. @를 포함하여야 합니다.");
-    // } else if (!isPasswordValid(inputValue.password)) {
-    //   alert("비밀번호는 최소 8자리 이상이어야 합니다.");
-    // } else {
     signin({
       email: inputValue.email,
       password: inputValue.password,
@@ -30,9 +22,9 @@ export default function Signin() {
       })
       .catch((error) => {
         alert("이메일 또는 비밀번호가 올바르지 않습니다.");
-        console.log(error);
+        // console.log(error);
+        throw new Error("Failed to sign in");
       });
-    // }
   };
 
   const [inputValue, handleChange, handleSubmit] = useInput(
@@ -42,8 +34,6 @@ export default function Signin() {
 
   const validEmail = isEmailValid(inputValue.email);
   const validPassword = isPasswordValid(inputValue.password);
-
-  console.log("검문소17 : 로그인 페이지 렌더링");
 
   return (
     <div className='h-screen flex flex-col justify-center items-center gap-1'>

@@ -1,5 +1,3 @@
-import { createTodo, getTodo, updateTodo, deleteItem } from "../apis/todoApi";
-
 export const todoReducer = (state, action) => {
   switch (action.type) {
     case "create-todo":
@@ -8,7 +6,7 @@ export const todoReducer = (state, action) => {
     case "get-todos":
       return action.payload;
 
-    case "update-todo": // 성능저하
+    case "update-todo":
       return state.map((todo) =>
         todo.id === action.payload.id
           ? {
