@@ -28,25 +28,25 @@ function App() {
           <Route
             path='/todo'
             element={
-              // <ProtectedRoute>
-              <TodoPage />
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <TodoPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path='/signin'
             element={
-              // <ProtectedRoute>
-              <SigninPage />
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <SigninPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path='/signup'
             element={
-              // <ProtectedRoute>
-              <SignupPage />
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <SignupPage />
+              </ProtectedRoute>
             }
           />
           <Route path='*' element={<NotFoundPage />} />
