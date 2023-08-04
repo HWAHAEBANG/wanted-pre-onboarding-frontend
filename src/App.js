@@ -9,7 +9,8 @@ import NotFoundPage from "./pages/NotFoundPage";
 import HomePage from "./pages/HomePage";
 import { authContext } from "./context/authContext";
 import { useEffect, useState } from "react";
-import ProtectedRoute from "./components/protected-route/ProtectedRoute";
+import ProtectedRouteUnsignin from "./components/protected-route/ProtectedRouteUnsignin";
+import ProtectedRouteSignin from "./components/protected-route/ProtectedRouteSignin";
 
 function App() {
   const checkSigninStatus = () => {
@@ -28,25 +29,25 @@ function App() {
           <Route
             path='/todo'
             element={
-              <ProtectedRoute>
+              <ProtectedRouteSignin>
                 <TodoPage />
-              </ProtectedRoute>
+              </ProtectedRouteSignin>
             }
           />
           <Route
             path='/signin'
             element={
-              <ProtectedRoute>
+              <ProtectedRouteUnsignin>
                 <SigninPage />
-              </ProtectedRoute>
+              </ProtectedRouteUnsignin>
             }
           />
           <Route
             path='/signup'
             element={
-              <ProtectedRoute>
+              <ProtectedRouteUnsignin>
                 <SignupPage />
-              </ProtectedRoute>
+              </ProtectedRouteUnsignin>
             }
           />
           <Route path='*' element={<NotFoundPage />} />
