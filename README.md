@@ -28,6 +28,6 @@ git clone https://github.com/HWAHAEBANG/wanted-pre-onboarding-frontend.git
 ## 배포 (데모 영상 대체)
 
 - <b>배포 링크</b>
-  - http://ec2-3-36-30-219.ap-northeast-2.compute.amazonaws.com
+  - https://wanted-pre-onboarding-frontend-alpha-rosy.vercel.app
 - <b>배포 환경</b>
-  - AWS EC2, NginX
+  - AWS EC2, NginX => vercel (인스턴스 만료로 인한 부득이한 배포 환경 변경)
